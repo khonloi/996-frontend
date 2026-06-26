@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 996 Market Frontend
+
+## Overview
+The 996 Market Frontend is the customer-facing user interface for the e-commerce platform. It provides a robust, modern, and highly-performant browsing experience featuring a componentized React architecture, a flat design system, and responsive mobile-first layouts.
+
+## Technology Stack
+*   **Framework**: Next.js (App Router)
+*   **UI Library**: React
+*   **Styling**: Tailwind CSS
+*   **Icons**: Lucide React
+*   **State Management**: Zustand
+*   **Language**: TypeScript
+
+## Project Structure
+The application follows standard Next.js App Router conventions combined with a modular component architecture:
+*   `/src/app`: Contains the routing structure (`page.tsx`, `layout.tsx`) leveraging React Server Components for optimal performance.
+*   `/src/components/layout`: Global layout pieces like the Header, Footer, and responsive Sidebar.
+*   `/src/components/home`: Modular sections for the Home page, including `HeroBanner`, `CategoryGrid`, and `ProductGrid`.
+*   `/src/components/product`: Highly reusable product components like `ProductCard`.
+*   `/src/store`: Zustand stores for client-side state management (e.g., Sidebar visibility).
+*   `/src/lib/api.ts`: Centralized utility for communicating with the NestJS backend API.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+*   Node.js (v18 or higher recommended)
+*   npm
+*   The 996 Market Backend must be running concurrently (typically on port 3000) for data fetching to succeed.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Installation
+1. Navigate to the frontend directory.
+2. Install the necessary dependencies:
+   ```bash
+   npm install
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Running the Application
+The frontend development server runs on port 3001 to avoid conflicts with the backend.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+*   **Development mode** (with hot-reload):
+    ```bash
+    npm run dev
+    ```
+    Open `http://localhost:3001` in your browser.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+*   **Production build**:
+    ```bash
+    npm run build
+    npm start
+    ```
 
-## Learn More
+*   **Testing**:
+    The project is set up with Jest and React Testing Library.
+    ```bash
+    npm test
+    ```
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Architecture Highlights
+*   **Server Components**: The root `layout.tsx` and `page.tsx` heavily utilize Next.js Server Components. They securely fetch categories and products from the backend API on the server before streaming the HTML to the client, ensuring fast initial page loads and excellent SEO.
+*   **Client Components**: Interactive elements, such as the `Header` and `Sidebar`, use `"use client"` and integrate with `Zustand` for snappy, local state management without requiring full page reloads.
+*   **Design System**: The application uses a custom Tailwind CSS configuration to enforce a modern "flat design" aesthetic with sharp edges, solid borders, and clear brand colors.
