@@ -102,7 +102,9 @@ export default function Sidebar({
                       >
                         <div className="flex items-center gap-3">
                           <Icon className="w-5 h-5 text-gray-500 group-hover:text-brand-primary transition-colors" />
-                          <span className="font-medium text-sm">{category.name}</span>
+                          <span className="font-medium text-sm">
+                            {category.name}
+                          </span>
                         </div>
                         <ChevronRight className="w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                       </Link>

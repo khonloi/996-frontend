@@ -11,6 +11,11 @@ export default async function Home() {
     fetchProducts(),
   ]);
 
+  // Segment products dynamically to show distinct selections in each grid
+  const trendingProducts = products.slice(0, 8);
+  const bestSellers = products.slice(6, 14);
+  const newArrivals = products.slice(12, 20);
+
   return (
     <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-12 bg-gray-50">
       {/* Hero Banner Section */}
@@ -20,19 +25,103 @@ export default async function Home() {
       <CategoryGrid categories={categories} />
 
       {/* Trending Products */}
-      <ProductGrid title="Trending Now" products={products} />
+      <ProductGrid title="Trending Now" products={trendingProducts} />
+
+      {/* Middle Bento Grid */}
+      <section>
+        <BentoGrid className="!px-0 !max-w-none">
+          {/* Wide Tile */}
+          <BentoCard
+            shape="wide"
+            className="bg-brand-dark text-white p-8 flex justify-between relative overflow-hidden shadow-xs"
+          >
+            <div className="z-10 relative flex flex-col justify-between h-full">
+              <div>
+                <p className="text-brand-accent font-semibold mb-1">
+                  Chef's Kitchen
+                </p>
+                <h2 className="text-2xl font-bold leading-tight mb-4">
+                  Weekly Recipe Kits
+                  <br />
+                  with fresh ingredients
+                </h2>
+              </div>
+              <a
+                href="#"
+                className="underline text-sm font-medium hover:text-brand-accent transition-colors"
+              >
+                Browse recipe kits
+              </a>
+            </div>
+          </BentoCard>
+
+          {/* Small Tile - Local Farms */}
+          <BentoCard
+            shape="small"
+            className="bg-amber-100 border border-amber-200/60 p-6 flex flex-col shadow-xs"
+          >
+            <h3 className="text-brand-dark text-xl font-bold mb-1">
+              Local Farms
+            </h3>
+            <p className="text-amber-900/80 text-sm mb-4">
+              100% Organic certified fresh crops.
+            </p>
+            <a
+              href="#"
+              className="underline text-sm text-brand-primary font-medium mb-auto hover:text-brand-dark transition-colors"
+            >
+              Meet our farmers
+            </a>
+          </BentoCard>
+
+          {/* Small Tile - Butcher's Choice */}
+          <BentoCard
+            shape="small"
+            className="bg-rose-100 border border-rose-200/60 p-6 flex flex-col shadow-xs"
+          >
+            <h3 className="text-brand-dark text-xl font-bold mb-1">
+              Butcher's Choice
+            </h3>
+            <p className="text-rose-900/80 text-sm mb-4">
+              Premium 100% pasture-raised meats.
+            </p>
+            <a
+              href="#"
+              className="underline text-sm text-rose-700 font-medium mb-auto hover:text-brand-dark transition-colors"
+            >
+              Shop meats
+            </a>
+          </BentoCard>
+
+          {/* Small Tile - Cold Pressed Juices */}
+          <BentoCard
+            shape="small"
+            className="bg-blue-100 border border-blue-200/60 p-6 flex flex-col shadow-xs"
+          >
+            <h3 className="text-brand-dark text-xl font-bold mb-1">
+              Cold Pressed
+            </h3>
+            <p className="text-blue-900/80 text-sm mb-4">
+              Raw organic juices and drinks.
+            </p>
+            <a
+              href="#"
+              className="underline text-sm text-blue-700 font-medium mb-auto hover:text-brand-dark transition-colors"
+            >
+              Shop beverages
+            </a>
+          </BentoCard>
+        </BentoGrid>
+      </section>
+
+      {/* Best Sellers */}
+      <ProductGrid title="Best Sellers" products={bestSellers} />
+
+      {/* New Arrivals */}
+      <ProductGrid title="New Arrivals" products={newArrivals} />
 
       {/* Featured Bento Grid */}
       <section>
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">
-            Featured Offers & Services
-          </h2>
-          <p className="text-gray-600">
-            Explore our latest deals designed for you.
-          </p>
-        </div>
-
         <BentoGrid className="!px-0 !max-w-none">
           {/* Large Tile - Left */}
           <BentoCard
@@ -41,15 +130,15 @@ export default async function Home() {
           >
             <div>
               <p className="text-brand-primary font-semibold mb-2">
-                End of Season Sale
+                Organic Farm Fresh
               </p>
               <h2 className="text-brand-dark text-4xl font-bold leading-tight mb-6">
-                Up to 50% Off
+                Up to 30% Off
                 <br />
-                All Electronics
+                All Vegetables
               </h2>
               <button className="bg-brand-primary text-white hover:bg-brand-dark transition-colors px-6 py-2 rounded-full font-medium cursor-pointer">
-                Shop the Sale
+                Shop Fresh Produce
               </button>
             </div>
           </BentoCard>
@@ -61,26 +150,31 @@ export default async function Home() {
           >
             <div className="z-10 relative flex flex-col justify-between h-full">
               <div>
-                <p className="text-brand-accent font-semibold mb-1">Limited Time Offer</p>
+                <p className="text-brand-accent font-semibold mb-1">
+                  Free Delivery
+                </p>
                 <h2 className="text-2xl font-bold leading-tight mb-4">
-                  Free Shipping on
+                  Free Delivery on
                   <br />
-                  Orders Over $50
+                  Orders Over $35
                 </h2>
               </div>
               <a
                 href="#"
                 className="underline text-sm font-medium hover:text-brand-accent transition-colors"
               >
-                View details
+                Schedule delivery
               </a>
             </div>
           </BentoCard>
 
           {/* Tall Tile - Right */}
-          <BentoCard shape="tall" className="bg-gray-100 border border-gray-200 p-8 flex flex-col shadow-xs">
+          <BentoCard
+            shape="tall"
+            className="bg-gray-100 border border-gray-200 p-8 flex flex-col shadow-xs"
+          >
             <h3 className="text-brand-primary font-bold text-lg mb-1">
-              Store Credit Card
+              Groceries Visa
             </h3>
             <h2 className="text-brand-dark text-3xl font-bold leading-tight mb-4">
               Earn 5% back on
@@ -96,12 +190,15 @@ export default async function Home() {
           </BentoCard>
 
           {/* Small Tile - Bottom Middle Left */}
-          <BentoCard shape="small" className="bg-green-200/50 border border-green-200 p-6 flex flex-col shadow-xs">
+          <BentoCard
+            shape="small"
+            className="bg-green-200/50 border border-green-200 p-6 flex flex-col shadow-xs"
+          >
             <h3 className="text-brand-dark text-xl font-bold mb-1">
-              Flash Deals
+              Daily Harvest
             </h3>
             <p className="text-brand-secondary text-sm mb-4">
-              New deals added daily.
+              Fresh deals from local farms.
             </p>
             <a
               href="#"
@@ -112,19 +209,22 @@ export default async function Home() {
           </BentoCard>
 
           {/* Small Tile - Bottom Middle Right */}
-          <BentoCard shape="small" className="bg-amber-100/60 p-6 flex flex-col border border-amber-200 shadow-xs">
+          <BentoCard
+            shape="small"
+            className="bg-amber-100/60 p-6 flex flex-col border border-amber-200 shadow-xs"
+          >
             <h3 className="text-brand-dark text-xl font-bold mb-1">
-              Clearance
+              Weekly Specials
               <br />
               starting at
               <br />
-              $9.99
+              $0.99
             </h3>
             <a
               href="#"
               className="underline text-sm text-brand-secondary font-medium mb-auto mt-2 hover:text-brand-dark transition-colors"
             >
-              Shop clearance
+              Shop specials
             </a>
           </BentoCard>
         </BentoGrid>

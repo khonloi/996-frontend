@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { Product } from '@/lib/api';
 import ProductCard from '@/components/product/ProductCard';
 
@@ -11,6 +11,59 @@ interface ProductGridProps {
 
 export default function ProductGrid({ title = 'Trending Now', products }: ProductGridProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [pagesCount, setPagesCount] = useState(1);
+
+  const updateScrollState = useCallback(() => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      const maxScrollLeft = scrollWidth - clientWidth;
+      const totalPages = Math.ceil(scrollWidth / clientWidth) || 1;
+      
+      let pageIndex = 0;
+      if (maxScrollLeft > 0) {
+        pageIndex = Math.min(
+          Math.round((scrollLeft / maxScrollLeft) * (totalPages - 1)),
+          totalPages - 1
+        );
+      }
+      
+      setPagesCount(totalPages);
+      setCurrentIndex(pageIndex);
+    }
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    updateScrollState();
+    
+    // Create resize observer to handle layout changes dynamically
+    const observer = new ResizeObserver(updateScrollState);
+    observer.observe(el);
+
+    el.addEventListener("scroll", updateScrollState, { passive: true });
+    window.addEventListener("resize", updateScrollState);
+
+    return () => {
+      observer.disconnect();
+      el.removeEventListener("scroll", updateScrollState);
+      window.removeEventListener("resize", updateScrollState);
+    };
+  }, [updateScrollState]);
+
+  const handleDotClick = (index: number) => {
+    if (scrollRef.current) {
+      const { scrollWidth, clientWidth } = scrollRef.current;
+      const maxScrollLeft = scrollWidth - clientWidth;
+      const totalPages = Math.ceil(scrollWidth / clientWidth) || 1;
+      if (totalPages > 1) {
+        const scrollTo = (index / (totalPages - 1)) * maxScrollLeft;
+        scrollRef.current.scrollTo({ left: scrollTo, behavior: "smooth" });
+      }
+    }
+  };
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -58,19 +111,39 @@ export default function ProductGrid({ title = 'Trending Now', products }: Produc
       </div>
 
       {products.length > 0 ? (
-        <div 
-          ref={scrollRef}
-          className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar pb-2"
-        >
-          {products.map((item) => (
-            <div 
-              key={item.id} 
-              className="w-[calc(50%-8px)] md:w-[calc(33.333%-16px)] lg:w-[calc(20%-19.2px)] flex-shrink-0 snap-start"
-            >
-              <ProductCard product={item} />
+        <>
+          <div 
+            ref={scrollRef}
+            className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar pb-2"
+          >
+            {products.map((item) => (
+              <div 
+                key={item.id} 
+                className="w-[calc(50%-8px)] md:w-[calc(33.333%-16px)] lg:w-[calc(20%-19.2px)] flex-shrink-0 snap-start"
+              >
+                <ProductCard product={item} />
+              </div>
+            ))}
+          </div>
+
+          {/* Indicators */}
+          {pagesCount > 1 && (
+            <div className="flex justify-center gap-1.5 items-center mt-6">
+              {Array.from({ length: pagesCount }).map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => handleDotClick(idx)}
+                  aria-label={`Go to slide ${idx + 1}`}
+                  className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                    idx === currentIndex
+                      ? "w-5 bg-brand-primary"
+                      : "w-1.5 bg-gray-300 hover:bg-gray-400"
+                  }`}
+                />
+              ))}
             </div>
-          ))}
-        </div>
+          )}
+        </>
       ) : (
         <p className="text-gray-500">No trending products available right now.</p>
       )}

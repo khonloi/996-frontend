@@ -7,7 +7,7 @@ interface SidebarState {
 }
 
 export const useSidebarStore = create<SidebarState>((set) => ({
-  isOpen: true, // open by default
+  isOpen: false, // closed by default
   toggle: () => set((state) => ({ isOpen: !state.isOpen })),
   setIsOpen: (isOpen) => set({ isOpen }),
 }));
