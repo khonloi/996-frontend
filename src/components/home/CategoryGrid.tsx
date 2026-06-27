@@ -1,4 +1,6 @@
-import React from 'react';
+"use client";
+
+import React, { useRef } from 'react';
 import { Category } from '@/lib/api';
 
 interface CategoryGridProps {
@@ -6,15 +8,65 @@ interface CategoryGridProps {
 }
 
 export default function CategoryGrid({ categories }: CategoryGridProps) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const { scrollLeft, clientWidth } = scrollRef.current;
+      const scrollTo = direction === 'left' 
+        ? scrollLeft - clientWidth * 0.75 
+        : scrollLeft + clientWidth * 0.75;
+      scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
+    }
+  };
+
+  const getNavBtnClasses = (count: number) => {
+    if (count <= 2) return "hidden";
+    if (count <= 4) return "flex md:hidden";
+    if (count <= 6) return "flex lg:hidden";
+    return "flex";
+  };
+
   return (
     <section>
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Shop by Department</h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-800">Shop by Department</h2>
+        {categories.length > 0 && (
+          <div className={`${getNavBtnClasses(categories.length)} gap-2`}>
+            <button 
+              onClick={() => scroll('left')}
+              className="w-10 h-10 rounded-full border border-gray-200 bg-white flex items-center justify-center text-gray-600 hover:bg-gray-50 hover:text-brand-primary hover:border-brand-primary active:scale-95 transition-all shadow-xs cursor-pointer"
+              aria-label="Previous Department"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+              </svg>
+            </button>
+            <button 
+              onClick={() => scroll('right')}
+              className="w-10 h-10 rounded-full border border-gray-200 bg-white flex items-center justify-center text-gray-600 hover:bg-gray-50 hover:text-brand-primary hover:border-brand-primary active:scale-95 transition-all shadow-xs cursor-pointer"
+              aria-label="Next Department"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+            </button>
+          </div>
+        )}
+      </div>
+
       {categories.length > 0 ? (
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        <div 
+          ref={scrollRef}
+          className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar pb-2"
+        >
           {categories.map((dept) => (
-            <div key={dept.id} className="bg-white rounded-xl border border-gray-200 p-6 flex flex-col items-center justify-center cursor-pointer hover:border-brand-primary transition-all group">
+            <div 
+              key={dept.id} 
+              className="w-[calc(50%-8px)] md:w-[calc(25%-12px)] lg:w-[calc(16.666%-14px)] flex-shrink-0 snap-start bg-white rounded-xl border border-gray-200 p-6 flex flex-col items-center justify-center cursor-pointer hover:border-brand-primary transition-all group"
+            >
               <div className="w-16 h-16 bg-gray-50 rounded-full mb-3 group-hover:bg-brand-primary/10 transition-colors"></div>
-              <span className="font-medium text-sm text-center text-gray-700 group-hover:text-brand-primary">{dept.name}</span>
+              <span className="font-medium text-sm text-center text-gray-700 group-hover:text-brand-primary truncate w-full">{dept.name}</span>
             </div>
           ))}
         </div>

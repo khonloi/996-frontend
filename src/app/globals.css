@@ -10,6 +10,10 @@
   --color-brand-tertiary: #82CD47;
   --color-brand-accent: #F0FF42;
   --color-brand-dark: #143614;
+
+  /* Font Families */
+  --font-sans: var(--font-geist-sans), sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
 }
 
 :root {
@@ -26,4 +30,15 @@
 
 html, body {
   height: 100%;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }

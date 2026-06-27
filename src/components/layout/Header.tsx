@@ -21,7 +21,7 @@ export default function Header() {
             <Menu className="w-6 h-6" />
           </button>
           <Link href="/" className="flex items-center gap-2">
-            {/* Using a star icon as a placeholder for the Walmart spark */}
+            {/* Using a star icon as a placeholder for the 996 spark */}
             <div className="font-bold text-2xl tracking-tight flex items-center">
               <span>996</span>
               <span className="text-brand-accent ml-1">Market</span>
