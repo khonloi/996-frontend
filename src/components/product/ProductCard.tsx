@@ -1,6 +1,7 @@
 import React from "react";
 import { Tag } from "lucide-react";
 import { Product } from "@/lib/api";
+import Link from "next/link";
 
 interface ProductCardProps {
   product: Product;
@@ -8,7 +9,10 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-4 hover:border-brand-primary transition-colors relative flex flex-col h-full">
+    <Link 
+      href={`/products/${product.id}`}
+      className="bg-white rounded-xl border border-gray-200 p-4 hover:border-brand-primary transition-colors relative flex flex-col h-full block"
+    >
       {/* Featured Tag */}
       <div className="absolute top-2 left-2 bg-brand-primary text-white text-xs font-bold px-2 py-1 rounded-md z-10 shadow-sm">
         {product.category?.name || "Featured"}
@@ -27,7 +31,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       </div>
 
       <div className="flex flex-col flex-1">
-        <h3 className="font-medium text-sm text-gray-800 mb-2 line-clamp-2">
+        <h3 className="font-medium text-sm text-gray-800 mb-2 line-clamp-2 hover:underline">
           {product.name}
         </h3>
         <div className="flex items-end gap-2 mb-4 mt-auto">
@@ -35,10 +39,16 @@ export default function ProductCard({ product }: ProductCardProps) {
             ${Number(product.price).toFixed(2)}
           </span>
         </div>
-        <button className="w-full border border-gray-300 rounded-full py-2 text-sm font-semibold hover:border-brand-primary hover:text-brand-primary transition-colors mt-auto cursor-pointer">
+        <button 
+          onClick={(e) => {
+            e.preventDefault(); // Prevent navigating when clicking Add to Cart
+            // Add to cart logic here
+          }}
+          className="w-full border border-gray-300 rounded-full py-2 text-sm font-semibold hover:border-brand-primary hover:text-brand-primary transition-colors mt-auto cursor-pointer"
+        >
           Add to Cart
         </button>
       </div>
-    </div>
+    </Link>
   );
 }
