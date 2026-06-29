@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface ProductDetailsAccordionProps {
   features?: string[];
@@ -47,17 +48,31 @@ export default function ProductDetailsAccordion({
           aria-expanded={isOpen}
         >
           <span className="font-bold text-gray-900">{title}</span>
-          {isOpen ? (
-            <ChevronUp className="w-5 h-5 text-brand-primary" />
-          ) : (
-            <ChevronDown className="w-5 h-5 text-gray-400" />
-          )}
+          <ChevronDown 
+            className={`w-5 h-5 transition-transform duration-200 ${
+              isOpen ? "text-brand-primary rotate-180" : "text-gray-400"
+            }`}
+          />
         </button>
-        {isOpen && (
-          <div className="p-4 pt-0 border-t border-gray-100 bg-white">
-            {children}
-          </div>
-        )}
+        <AnimatePresence initial={false}>
+          {isOpen && (
+            <motion.div
+              initial="collapsed"
+              animate="open"
+              exit="collapsed"
+              variants={{
+                open: { opacity: 1, height: "auto" },
+                collapsed: { opacity: 0, height: 0 }
+              }}
+              transition={{ duration: 0.25, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              <div className="p-4 pt-0 border-t border-gray-100 bg-white">
+                {children}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     );
   };

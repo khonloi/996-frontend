@@ -18,25 +18,14 @@ export default function ProductSidebar({
   const stockNum = Number(stock) || 0;
 
   return (
-    <div className="bg-white border-none md:border md:border-gray-200 md:rounded-lg p-0 md:p-6 flex flex-col gap-5">
+    <div className="bg-white border-none md:border md:border-gray-200 md:rounded-lg p-0 md:p-6 flex flex-col gap-6">
       {/* Pricing */}
       <div>
-        <div className="flex items-baseline gap-2 mb-1">
+        <div className="flex items-baseline gap-2">
           <span className="text-3xl font-extrabold text-brand-primary tracking-tight">
-            Now ${priceNum.toFixed(2)}
+            ${priceNum.toFixed(2)}
           </span>
         </div>
-
-        <div className="text-sm text-gray-500 mt-2 flex items-center gap-1">
-          Price when purchased online <Info className="w-4 h-4 text-gray-400" />
-        </div>
-      </div>
-
-      {/* Free Returns */}
-      <div className="flex items-center gap-2 text-sm text-gray-700 font-medium">
-        <RotateCcw className="w-5 h-5 text-brand-primary" />
-        <span>Free 90-day returns</span>
-        <Info className="w-4 h-4 text-gray-400" />
       </div>
 
       {/* Add to Cart Button */}

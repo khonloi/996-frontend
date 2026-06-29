@@ -9,15 +9,11 @@ interface BentoCardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const BentoCard = React.forwardRef<HTMLDivElement, BentoCardProps>(
   ({ shape, children, className = "", ...props }, ref) => {
-    // Determine the column and row span classes based on the requested shape.
-    // By default (mobile), all cards span 1 column (stack vertically).
-    // On md (tablet), they snap into a 2-column grid.
-    // On lg (desktop), they snap into the defined 5-column grid layout.
     const shapeClasses = {
       large: "md:col-span-2 md:row-span-2 lg:col-span-2 lg:row-span-2",
       wide: "md:col-span-2 md:row-span-1 lg:col-span-2 lg:row-span-1",
       small: "md:col-span-1 md:row-span-1 lg:col-span-1 lg:row-span-1",
-      tall: "md:col-span-2 md:row-span-1 lg:col-span-1 lg:row-span-2", // on tablet, tall spans 2 columns
+      tall: "md:col-span-2 md:row-span-1 lg:col-span-1 lg:row-span-2",
     }[shape];
 
     return (

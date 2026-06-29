@@ -3,7 +3,7 @@ import { fetchCategories, fetchProducts } from "@/lib/api";
 import HeroBanner from "@/components/home/HeroBanner";
 import CategoryGrid from "@/components/home/CategoryGrid";
 import ProductGrid from "@/components/home/ProductGrid";
-import { BentoGrid, BentoCard } from "@/components/ui/bento-grid/bento-grid";
+import { BentoGrid, BentoCard } from "@/components/ui/bento-grid/BentoGrid";
 
 export default async function Home() {
   const [categories, products] = await Promise.all([
